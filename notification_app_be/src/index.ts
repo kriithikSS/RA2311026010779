@@ -8,17 +8,14 @@ import { ScoredNotification } from "./types";
 const TOP_N = 10;
 
 async function main() {
-  await Log("backend", "info", "service", `starting priority inbox — finding top ${TOP_N}`);
+  await Log("backend", "info", "service", `starting, finding top ${TOP_N}`);
 
   const notifications = await fetchNotifications();
 
-  // min-heap: root = lowest score. When heap is full and new item beats root, swap.
-  // this keeps insertion at O(log N) instead of re-sorting the whole list each time.
   const heap = new MinHeap<ScoredNotification>((a, b) => a.score - b.score);
 
   for (const n of notifications) {
     const s = score(n);
-
     if (heap.size < TOP_N) {
       heap.push({ ...n, score: s });
     } else if (heap.top() && s > heap.top()!.score) {
@@ -27,21 +24,18 @@ async function main() {
     }
   }
 
-  // pull out what's in the heap and sort descending for display
-  const topNotifications = heap.values().sort((a, b) => b.score - a.score);
+  const result = heap.values().sort((a, b) => b.score - a.score);
 
-  await Log("backend", "info", "service", `top ${TOP_N} notifications computed successfully`);
+  await Log("backend", "info", "service", `done, got top ${TOP_N}`);
 
-  console.log(`\n=== Top ${TOP_N} Priority Notifications ===\n`);
-  topNotifications.forEach((n, i) => {
-    console.log(
-      `${i + 1}. [${n.Type}] ${n.Message} | ${n.Timestamp} | score: ${n.score.toFixed(6)}`
-    );
+  console.log(`\n=== Top ${TOP_N} Notifications ===\n`);
+  result.forEach((n, i) => {
+    console.log(`${i + 1}. [${n.Type}] ${n.Message} | score: ${n.score.toFixed(4)}`);
   });
 }
 
 main().catch(async (err) => {
-  await Log("backend", "fatal", "service", `unhandled error: ${err.message}`);
+  await Log("backend", "fatal", "service", err.message);
   console.error(err);
   process.exit(1);
 });

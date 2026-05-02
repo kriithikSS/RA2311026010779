@@ -3,10 +3,6 @@ import { getToken } from "./auth";
 
 const LOG_URL = "http://20.207.122.201/evaluation-service/logs";
 
-/**
- * Send a structured log entry to the evaluation server.
- * A failed log won't throw — it just prints to stderr so the app keeps running.
- */
 export async function Log(
   stack: Stack,
   level: Level,
@@ -26,10 +22,10 @@ export async function Log(
     });
 
     if (!res.ok) {
-      process.stderr.write(`[logger] server returned ${res.status} for log entry\n`);
+      process.stderr.write(`log failed, status ${res.status}\n`);
     }
   } catch (err) {
-    // intentionally not re-throwing — logging should never crash the app
-    process.stderr.write(`[logger] failed to send log: ${(err as Error).message}\n`);
+    // just swallow it, dont want logging to crash the app
+    process.stderr.write(`log error: ${(err as Error).message}\n`);
   }
 }

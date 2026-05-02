@@ -1,6 +1,5 @@
-// Min-heap — root always holds the item with the lowest score.
-// We cap it at N so the heap always represents the top-N items seen so far.
-// When a new item comes in, we only do work if it beats the current weakest entry.
+// min heap, keeps the top N items
+// root = smallest score, so we can quickly drop low scoring ones
 
 export class MinHeap<T> {
   private items: T[] = [];
@@ -14,15 +13,12 @@ export class MinHeap<T> {
 
   pop(): T | undefined {
     if (!this.items.length) return undefined;
-
     const root = this.items[0];
     const tail = this.items.pop()!;
-
     if (this.items.length > 0) {
       this.items[0] = tail;
       this.sinkDown(0);
     }
-
     return root;
   }
 
