@@ -1,5 +1,7 @@
 # Notification System Design
 
+## Stage 1
+
 problem
 there are too much notifiactions so its messy so we have to kind
 of organize it by the priority of the notifiaction and show them 
