@@ -5,7 +5,6 @@ export interface Notification {
   Timestamp: string;
 }
 
-// extended version used after scoring
 export interface ScoredNotification extends Notification {
   score: number;
 }
