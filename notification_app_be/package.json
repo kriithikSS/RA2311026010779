@@ -1,0 +1,18 @@
+{
+  "name": "notification-app-be",
+  "version": "1.0.0",
+  "description": "Backend logic for the campus priority notification inbox",
+  "scripts": {
+    "start": "ts-node -r dotenv/config src/index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "logging-middleware": "file:../logging_middleware"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
